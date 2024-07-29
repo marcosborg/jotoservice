@@ -36,7 +36,7 @@
         class="btn btn-default {{ $driver_id == $d->id ? 'disabled selected' : '' }}" style="margin-top: 5px;">{{
         $d->name }}</a>
     @endforeach
-    @if ($total_earnings_after_vat > 0)
+    
     <div class="row" style="margin-top: 5px;">
         <div class="col-md-6">
             <div class="panel panel-default">
@@ -260,11 +260,6 @@
             </div>
         </div>
     </div>
-    @else
-    <div class="alert alert-info" style="margin-top: 20px;" role="alert">
-        Não temos registo de viagens para este motorista nesta semana.
-    </div>
-    @endif
     @endif
 </div>
 @endsection

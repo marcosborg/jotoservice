@@ -134,14 +134,15 @@ class FinancialStatementController extends Controller
         })
             ->where('company_id', $company_id)
             ->where(function ($query) use ($tvde_week) {
-                $query->where('start_date', '<=', $tvde_week->start_date)
-                    ->orWhereNull('start_date');
-            })
-            ->where(function ($query) use ($tvde_week) {
-                $query->where('end_date', '>=', $tvde_week->end_date)
-                    ->orWhereNull('end_date');
+                $query->where(function ($query) use ($tvde_week) {
+                    $query->where('start_date', '<=', $tvde_week->end_date)
+                        ->where('end_date', '>=', $tvde_week->start_date);
+                })->orWhere(function ($query) {
+                    $query->whereNull('start_date')->orWhereNull('end_date');
+                });
             })
             ->get();
+
 
         $refund = 0;
         $deduct = 0;
