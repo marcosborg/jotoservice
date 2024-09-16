@@ -63,6 +63,18 @@
                             @endif
                             <span class="help-block">{{ trans('cruds.driver.fields.electric_helper') }}</span>
                         </div>
+                        <div class="form-group {{ $errors->has('tool_card') ? 'has-error' : '' }}">
+                            <label for="tool_card_id">{{ trans('cruds.driver.fields.tool_card') }}</label>
+                            <select class="form-control select2" name="tool_card_id" id="tool_card_id">
+                                @foreach($tool_cards as $id => $entry)
+                                    <option value="{{ $id }}" {{ old('tool_card_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('tool_card'))
+                                <span class="help-block" role="alert">{{ $errors->first('tool_card') }}</span>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.driver.fields.tool_card_helper') }}</span>
+                        </div>
                         <div class="form-group {{ $errors->has('local') ? 'has-error' : '' }}">
                             <label for="local_id">{{ trans('cruds.driver.fields.local') }}</label>
                             <select class="form-control select2" name="local_id" id="local_id">

@@ -1005,6 +1005,8 @@ return [
             'contract_type_helper'  => ' ',
             'contract_vat'              => 'Contract Vat',
             'contract_vat_helper'       => ' ',
+            'tool_card'                            => 'Tool Card',
+            'tool_card_helper'                     => ' ',
         ],
     ],
     'card' => [
@@ -1656,6 +1658,44 @@ return [
     'companyReport' => [
         'title'          => 'Company Report',
         'title_singular' => 'Company Report',
+    ],
+    'tollPayment' => [
+        'title'          => 'Toll Payment',
+        'title_singular' => 'Toll Payment',
+        'fields'         => [
+            'id'                => 'ID',
+            'id_helper'         => ' ',
+            'tvde_week'         => 'Tvde Week',
+            'tvde_week_helper'  => ' ',
+            'card'              => 'Card',
+            'card_helper'       => ' ',
+            'total'             => 'Total',
+            'total_helper'      => ' ',
+            'created_at'        => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at'        => 'Updated at',
+            'updated_at_helper' => ' ',
+            'deleted_at'        => 'Deleted at',
+            'deleted_at_helper' => ' ',
+        ],
+    ],
+    'tollCard' => [
+        'title'          => 'Toll Card',
+        'title_singular' => 'Toll Card',
+        'fields'         => [
+            'id'                => 'ID',
+            'id_helper'         => ' ',
+            'code'              => 'Código',
+            'code_helper'       => ' ',
+            'company'           => 'Empresa',
+            'company_helper'    => ' ',
+            'created_at'        => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at'        => 'Updated at',
+            'updated_at_helper' => ' ',
+            'deleted_at'        => 'Deleted at',
+            'deleted_at_helper' => ' ',
+        ],
     ],
 
 ];

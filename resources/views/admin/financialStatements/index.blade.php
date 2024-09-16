@@ -198,6 +198,16 @@
                                 @endif
                             </tr>
                             @endif
+                            @if ($toll_payments && $toll_payments > 0)
+                            <tr>
+                                <th>Via verde</th>
+                                <td></td>
+                                @if ($driver)
+                                <td>- {{ $toll_payments }}€</td>
+                                <td></td>
+                                @endif
+                            </tr>
+                            @endif
                             @foreach ($adjustments as $adjustment)
                             <tr>
                                 <th>{{ $adjustment->name }}</th>

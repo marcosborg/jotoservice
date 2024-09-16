@@ -28,6 +28,7 @@ class Driver extends Model
         'name',
         'card_id',
         'electric_id',
+        'tool_card_id',
         'local_id',
         'contract_type_id',
         'contract_vat_id',
@@ -130,6 +131,11 @@ class Driver extends Model
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function tool_card()
+    {
+        return $this->belongsTo(TollCard::class, 'tool_card_id');
     }
 
 }

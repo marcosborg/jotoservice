@@ -123,6 +123,17 @@
                                 </a>
                             </li>
                             @endcan
+                            @can('toll_card_access')
+                                        <li class="{{ request()->is("admin/toll-cards") || request()->is("admin/toll-cards/*") ? "active" : "" }}">
+                                            <a href="{{ route("admin.toll-cards.index") }}">
+                                                <i class="fa-fw fas fa-road">
+
+                                                </i>
+                                                <span>{{ trans('cruds.tollCard.title') }}</span>
+
+                                            </a>
+                                        </li>
+                                    @endcan
                             @can('local_access')
                             <li class="{{ request()->is("admin/locals") || request()->is("admin/locals/*") ? "active" :
                                 "" }}">
@@ -307,6 +318,17 @@
                         </a>
                     </li>
                     @endcan
+                    @can('toll_payment_access')
+                            <li class="{{ request()->is("admin/toll-payments") || request()->is("admin/toll-payments/*") ? "active" : "" }}">
+                                <a href="{{ route("admin.toll-payments.index") }}">
+                                    <i class="fa-fw fas fa-road">
+
+                                    </i>
+                                    <span>{{ trans('cruds.tollPayment.title') }}</span>
+
+                                </a>
+                            </li>
+                        @endcan
                     @can('adjustment_access')
                     <li class="{{ request()->is("admin/adjustments") || request()->is("admin/adjustments/*") ? "active"
                         : "" }}">

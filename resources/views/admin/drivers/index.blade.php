@@ -46,6 +46,9 @@
                                     {{ trans('cruds.driver.fields.electric') }}
                                 </th>
                                 <th>
+                                    {{ trans('cruds.driver.fields.tool_card') }}
+                                </th>
+                                <th>
                                     {{ trans('cruds.driver.fields.contract_type') }}
                                 </th>
                                 <th>
@@ -128,6 +131,7 @@
 { data: 'code', name: 'code' },
 { data: 'card_code', name: 'card.code' },
 { data: 'electric_code', name: 'electric.code' },
+{ data: 'tool_card_code', name: 'tool_card.code' },
 { data: 'contract_type_name', name: 'contract_type.name' },
 { data: 'contract_vat_name', name: 'contract_vat.name' },
 { data: 'state_name', name: 'state.name' },
