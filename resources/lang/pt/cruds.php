@@ -1005,7 +1005,7 @@ return [
             'contract_type_helper'  => ' ',
             'contract_vat'              => 'Contract Vat',
             'contract_vat_helper'       => ' ',
-            'tool_card'                            => 'Tool Card',
+            'tool_card'                            => 'Toll Card',
             'tool_card_helper'                     => ' ',
         ],
     ],
