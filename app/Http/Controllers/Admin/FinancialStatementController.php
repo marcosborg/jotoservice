@@ -478,6 +478,16 @@ class FinancialStatementController extends Controller
             ]);
         }
 
+        //Toll payments
+        $toll_payments = null;
+        if ($driver && $driver->tool_card_id) {
+            $toll_card = TollCard::find($driver->tool_card_id)->code;
+            $toll_payments = TollPayment::where([
+                'card' => $toll_card,
+                'tvde_week_id' => $tvde_week_id
+            ])->sum('total');
+        }
+
         $total_earnings_bolt = number_format($bolt_activities->sum('earnings_two') - $bolt_activities->sum('earnings_one'), 2);
         $total_tips_bolt = number_format($bolt_activities->sum('earnings_one'), 2);
         $total_earnings_uber = number_format($uber_activities->sum('earnings_two') - $uber_activities->sum('earnings_one'), 2);
@@ -516,6 +526,11 @@ class FinancialStatementController extends Controller
         $gross_debts = ($total_earnings_no_tip - $total_earnings_after_vat) + ($total_tips - $total_tip_after_vat) + $deduct;
 
         $final_total = $gross_credits - $gross_debts;
+
+        if ($toll_payments && $total_earnings > 0) {
+            $final_total = $final_total - $toll_payments;
+            $gross_debts = $gross_debts + $toll_payments;
+        }
 
         $electric_racio = null;
         $combustion_racio = null;
@@ -583,7 +598,8 @@ class FinancialStatementController extends Controller
             'combustion_expenses',
             'combustion_racio',
             'electric_racio',
-            'total_earnings_after_vat'
+            'total_earnings_after_vat',
+            'toll_payments'
         ]));
 
         */
@@ -624,6 +640,7 @@ class FinancialStatementController extends Controller
             'electric_racio' => $electric_racio,
             'total_earnings_after_vat' => $total_earnings_after_vat,
             'txt_admin' => $txt_admin,
+            'toll_payments' => $toll_payments
         ])->setOption([
                     'isRemoteEnabled' => true,
                 ]);
