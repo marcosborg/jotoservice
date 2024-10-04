@@ -418,15 +418,17 @@ class FinancialStatementController extends Controller
         $adjustments = Adjustment::whereHas('drivers', function ($query) use ($driver_id) {
             $query->where('id', $driver_id);
         })
+            ->where('company_id', $company_id)
             ->where(function ($query) use ($tvde_week) {
-                $query->where('start_date', '<=', $tvde_week->start_date)
-                    ->orWhereNull('start_date');
-            })
-            ->where(function ($query) use ($tvde_week) {
-                $query->where('end_date', '>=', $tvde_week->end_date)
-                    ->orWhereNull('end_date');
+                $query->where(function ($query) use ($tvde_week) {
+                    $query->where('start_date', '<=', $tvde_week->end_date)
+                        ->where('end_date', '>=', $tvde_week->start_date);
+                })->orWhere(function ($query) {
+                    $query->whereNull('start_date')->orWhereNull('end_date');
+                });
             })
             ->get();
+
 
         $refund = 0;
         $deduct = 0;
@@ -504,12 +506,16 @@ class FinancialStatementController extends Controller
                 $contract_type_rank = $value;
             }
         }
+
         //
+
+        $total_bolt = ($bolt_activities->sum('earnings_two') - $bolt_activities->sum('earnings_one')) * ($contract_type_rank ? $contract_type_rank->percent / 100 : 0);
+        $total_uber = ($uber_activities->sum('earnings_two') - $uber_activities->sum('earnings_one')) * ($contract_type_rank ? $contract_type_rank->percent / 100 : 0);
+
+        $total_earnings_after_vat = $total_bolt + $total_uber;
 
         $total_bolt = number_format(($bolt_activities->sum('earnings_two') - $bolt_activities->sum('earnings_one')) * ($contract_type_rank ? $contract_type_rank->percent / 100 : 0), 2);
         $total_uber = number_format(($uber_activities->sum('earnings_two') - $uber_activities->sum('earnings_one')) * ($contract_type_rank ? $contract_type_rank->percent / 100 : 0), 2);
-
-        $total_earnings_after_vat = $total_bolt + $total_uber;
 
         $bolt_tip_percent = $driver ? 100 - $driver->contract_vat->tips : 100;
         $uber_tip_percent = $driver ? 100 - $driver->contract_vat->tips : 100;
@@ -526,11 +532,6 @@ class FinancialStatementController extends Controller
         $gross_debts = ($total_earnings_no_tip - $total_earnings_after_vat) + ($total_tips - $total_tip_after_vat) + $deduct;
 
         $final_total = $gross_credits - $gross_debts;
-
-        if ($toll_payments && $total_earnings > 0) {
-            $final_total = $final_total - $toll_payments;
-            $gross_debts = $gross_debts + $toll_payments;
-        }
 
         $electric_racio = null;
         $combustion_racio = null;
@@ -554,7 +555,12 @@ class FinancialStatementController extends Controller
             }
         }
 
-        if ($driver->contract_vat->percent && $driver->contract_vat->percent > 0) {
+        if ($toll_payments && $total_earnings > 0) {
+            $final_total = $final_total - $toll_payments;
+            $gross_debts = $gross_debts + $toll_payments;
+        }
+
+        if ($driver && $driver->contract_vat->percent && $driver->contract_vat->percent > 0) {
             $txt_admin = ($final_total * $driver->contract_vat->percent) / 100;
             $gross_debts = $gross_debts + $txt_admin;
             $final_total = $final_total - $txt_admin;
@@ -642,8 +648,8 @@ class FinancialStatementController extends Controller
             'txt_admin' => $txt_admin,
             'toll_payments' => $toll_payments
         ])->setOption([
-                    'isRemoteEnabled' => true,
-                ]);
+            'isRemoteEnabled' => true,
+        ]);
 
 
         if ($request->download) {
@@ -654,7 +660,5 @@ class FinancialStatementController extends Controller
         } else {
             return $pdf->stream();
         }
-
     }
-
 }
