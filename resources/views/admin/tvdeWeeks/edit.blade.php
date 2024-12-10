@@ -15,8 +15,8 @@
                         <div class="form-group {{ $errors->has('tvde_month') ? 'has-error' : '' }}">
                             <label class="required" for="tvde_month_id">{{ trans('cruds.tvdeWeek.fields.tvde_month') }}</label>
                             <select class="form-control select2" name="tvde_month_id" id="tvde_month_id" required>
-                                @foreach($tvde_months as $id => $entry)
-                                    <option value="{{ $id }}" {{ (old('tvde_month_id') ? old('tvde_month_id') : $tvdeWeek->tvde_month->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                                @foreach($tvde_months as $tvde_month)
+                                    <option value="{{ $tvde_month->id }}" {{ (old('tvde_month_id') ? old('tvde_month_id') : $tvdeWeek->tvde_month->id ?? '') == $tvde_month->id ? 'selected' : '' }}>{{ $tvde_month->name }} | {{ $tvde_month->year->name }}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('tvde_month'))

@@ -18,7 +18,7 @@ class TvdeWeekController extends Controller
     {
         abort_if(Gate::denies('tvde_week_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $tvdeWeeks = TvdeWeek::with(['tvde_month'])->get();
+        $tvdeWeeks = TvdeWeek::with(['tvde_month.year'])->get();
 
         return view('admin.tvdeWeeks.index', compact('tvdeWeeks'));
     }
@@ -27,7 +27,7 @@ class TvdeWeekController extends Controller
     {
         abort_if(Gate::denies('tvde_week_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $tvde_months = TvdeMonth::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $tvde_months = TvdeMonth::orderBy('id', 'desc')->get()->load('year');
 
         return view('admin.tvdeWeeks.create', compact('tvde_months'));
     }
@@ -43,7 +43,7 @@ class TvdeWeekController extends Controller
     {
         abort_if(Gate::denies('tvde_week_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $tvde_months = TvdeMonth::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $tvde_months = TvdeMonth::orderBy('id', 'desc')->get()->load('year');
 
         $tvdeWeek->load('tvde_month');
 

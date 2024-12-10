@@ -54,7 +54,7 @@
                                             {{ $tvdeWeek->id ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $tvdeWeek->tvde_month->name ?? '' }}
+                                            {{ $tvdeWeek->tvde_month->name ?? '' }} | {{ $tvdeWeek->tvde_month->year->name ?? '' }}
                                         </td>
                                         <td>
                                             {{ $tvdeWeek->number ?? '' }}
